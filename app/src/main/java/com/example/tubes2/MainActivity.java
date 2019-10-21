@@ -12,19 +12,19 @@ import android.graphics.RectF;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements IMainActivity, View.OnTouchListener{
+public class MainActivity extends AppCompatActivity implements IMainActivity,View.OnTouchListener{
     private ImageView im;
     private Canvas mCanvas;
-    private boolean isInitiated = false;
     private Presenter presenter;
     private Paint paint;
-    private CustomGestureDetector customGestureDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     @Override
     public void onWindowFocusChanged(boolean focus){
         super.onWindowFocusChanged(focus);
-        initiateCanvas();
+        initiateAll();
     }
-    private void initiateCanvas() {
+    private void initiateAll() {
 
         Bitmap bitMap = Bitmap.createBitmap(im.getWidth(),im.getHeight(), Bitmap.Config.ARGB_8888);
         this.im.setImageBitmap(bitMap);
@@ -46,32 +46,30 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
         mCanvas.drawColor(background);
         this.im.invalidate();
         this.presenter = new Presenter(this,im.getWidth(),im.getHeight());//initialize presenter
-        this.customGestureDetector = new CustomGestureDetector(this.presenter);
         this.im.setOnTouchListener(this);
+
     }
 
     @Override
     public void drawPlayer(int x,int y) {
+        int background = ResourcesCompat.getColor(getResources(),R.color.colorPrimary,null);
+        mCanvas.drawColor(background); // berfungsi untuk reset layar
         this.mCanvas.drawRect(new Rect(x-25,y-25,x+25,y+25),paint);
         this.im.invalidate();
+
     }
 
-    /*
-     untuk implementasi gesture ontouchup
-     */
     @Override
     public boolean onTouch(View view, MotionEvent e) {
-        switch(e.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN: {
-                float x, y;
-                x = e.getX();
-                y = e.getY();
-                this.presenter.movePlayer(x, y);
-                Log.d("action down","test");
-            }
-            case MotionEvent.ACTION_UP:{
+        switch(e.getAction() & MotionEvent.ACTION_MASK){
+            case MotionEvent.ACTION_DOWN:
+                float x = e.getX();
+                float y = e.getY();
+                this.presenter.movePlayer(x,y);
+                break;
+            case MotionEvent.ACTION_UP:
                 this.presenter.stopMovePlayer();
-            }
+                break;
         }
         return true;
     }

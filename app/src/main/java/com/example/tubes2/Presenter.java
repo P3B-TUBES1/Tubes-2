@@ -23,18 +23,18 @@ public class Presenter {
         this.player.draw();
     }
     public void movePlayer(float x,float y){
+        Log.d("test","outside if");
         if(x > this.imWidth/2){
-            Log.d("test","test");
-            player.setVelocity(5);
+            this.player.setVelocity(20);
         }
         else{
-            player.setVelocity(-5);
+
+            this.player.setVelocity(-20);
         }
     }
-
-    // saat onTouchUp akan memanggil method ini
     public void stopMovePlayer(){
-        player.setVelocity(0);
+        this.player.setVelocity(0);
     }
+
 
 }

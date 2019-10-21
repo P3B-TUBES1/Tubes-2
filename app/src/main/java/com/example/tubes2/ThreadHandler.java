@@ -19,6 +19,7 @@ public class ThreadHandler extends Handler {
     public void handleMessage(Message msg){
         if(msg.what == 0){
             int[] n = (int[])msg.obj;
+            Log.d("handle message",n[0]+" "+n[1]);
             iMainActivity.drawPlayer(n[0],n[1]);
         }
     }
