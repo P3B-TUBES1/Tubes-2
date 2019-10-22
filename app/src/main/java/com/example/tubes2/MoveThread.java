@@ -31,21 +31,21 @@ public class MoveThread implements Runnable{
     @Override
     public void run() {
         while(flag){
-            long start = System.currentTimeMillis();
             this.player.move();
             int[] n = new int[2];
             n[0] = this.player.getX();
             n[1] = this.player.getY();
             Log.d("how many bullet",this.bullet.size()+"");
-            int[][] n2 = new int[2][bullet.size()];
+
+            this.threadHandler.draw(n);
             for(int i=0;i<this.bullet.size();i++) {
                 this.bullet.get(i).move();
-                n2[0][i] = this.bullet.get(i).getX();
-                n2[1][i] = this.bullet.get(i).getY();
+                n = new int[2];
+                n[0] = this.bullet.get(i).getX();
+                n[1] = this.bullet.get(i).getY();
+                this.threadHandler.drawBullet(n);
             }
-            threadHandler.draw(n,n2);
-            long end = System.currentTimeMillis()-start;
-            Log.d("time spent",end+"MS");
+            this.iMainActivity.resetCanvas();
             try{
                 Thread.sleep(1000/30);
             }catch(Exception e){
