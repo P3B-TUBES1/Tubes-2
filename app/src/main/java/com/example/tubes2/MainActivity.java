@@ -55,13 +55,16 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
         int background = ResourcesCompat.getColor(getResources(),R.color.colorPrimary,null);
         mCanvas.drawColor(background); // berfungsi untuk reset layar
         this.mCanvas.drawRect(new Rect(x-25,y-25,x+25,y+25),paint);
-        this.im.invalidate();
 
     }
 
     @Override
     public void drawBullet(int x, int y) {
         this.mCanvas.drawRect(new Rect(x-25,y-25,x+25,y+25),paint);
+    }
+    @Override
+    public void resetCanvas(){
+        this.im.invalidate();
     }
 
     @Override

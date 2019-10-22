@@ -11,10 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /*
- * Player message = 0
- *
- * bullet message =1
- * Enemy message = 2
+
  */
 public class ThreadHandler extends Handler {
     private IMainActivity iMainActivity;

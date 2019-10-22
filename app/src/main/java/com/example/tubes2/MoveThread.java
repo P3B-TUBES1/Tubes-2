@@ -45,6 +45,7 @@ public class MoveThread implements Runnable{
                 n[1] = this.bullet.get(i).getY();
                 this.threadHandler.drawBullet(n);
             }
+            this.iMainActivity.resetCanvas();
             try{
                 Thread.sleep(1000/30);
             }catch(Exception e){
