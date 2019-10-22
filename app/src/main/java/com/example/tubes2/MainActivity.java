@@ -60,6 +60,11 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
     }
 
     @Override
+    public void drawBullet(int x, int y) {
+        this.mCanvas.drawRect(new Rect(x-25,y-25,x+25,y+25),paint);
+    }
+
+    @Override
     public boolean onTouch(View view, MotionEvent e) {
         switch(e.getAction() & MotionEvent.ACTION_MASK){
             case MotionEvent.ACTION_DOWN:
