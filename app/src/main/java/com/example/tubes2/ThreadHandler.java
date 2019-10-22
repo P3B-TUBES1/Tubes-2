@@ -25,25 +25,33 @@ public class ThreadHandler extends Handler {
     @Override
     public void handleMessage(Message msg){
         if(msg.what == 0){
-            int[] n = (int[])msg.obj;
-            Log.d("handle message",n[0]+" "+n[1]);
-            iMainActivity.drawPlayer(n[0],n[1]);
+            ObjHolder objHolder = (ObjHolder) msg.obj;
+            iMainActivity.drawPlayer(objHolder.getN(),objHolder.getN2());
         }
-        else if(msg.what == 1){
-            int[] n =(int[])msg.obj;
-            this.iMainActivity.drawBullet(n[0],n[1]);
-        }
+
     }
-    public void draw(int[] n){
+    public void draw(int[] n,int[][] n2){
         Message msg = new Message();
         msg.what = 0; // value for player
-        msg.obj = n;
+        msg.obj = new ObjHolder(n,n2);
         this.sendMessage(msg);
     }
-    public void drawBullet(int[] n ){
-        Message msg = new Message();
-        msg.what = 1; // value for bullet
-        msg.obj = n;
-        this.sendMessage(msg);
+
+    /*
+     * obj holder menyimpan file x dan y untuk player,enemy,bullet
+     */
+    private class ObjHolder{
+        private int[] n;
+        private int[][] n2;
+        public ObjHolder(int[] n,int[][] n2){
+            this.n = n;
+            this.n2 = n2;
+        }
+        public int[] getN(){
+            return this.n;
+        }
+        public int[][] getN2(){
+            return this.n2;
+        }
     }
 }

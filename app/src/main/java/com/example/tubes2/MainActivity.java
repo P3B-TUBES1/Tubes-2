@@ -51,17 +51,22 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
     }
 
     @Override
-    public void drawPlayer(int x,int y) {
+    public void drawPlayer(int[] n,int[][] n2) {
         int background = ResourcesCompat.getColor(getResources(),R.color.colorPrimary,null);
         mCanvas.drawColor(background); // berfungsi untuk reset layar
-        this.mCanvas.drawRect(new Rect(x-25,y-25,x+25,y+25),paint);
+        this.mCanvas.drawRect(new Rect(n[0]-25,n[1]-25,n[0]+25,n[1]+25),paint);
+        drawBullet(n2);
         this.im.invalidate();
 
     }
 
     @Override
-    public void drawBullet(int x, int y) {
-        this.mCanvas.drawRect(new Rect(x-25,y-25,x+25,y+25),paint);
+    public void drawBullet(int[][] n2) {
+        for(int i=0;i<n2[0].length;i++) {
+            this.mCanvas.drawRect(new Rect(n2[0][i] - 10, n2[1][i] - 10, n2[0][i] + 10
+                    , n2[1][i] + 50), paint);
+        }
+
     }
 
     @Override
