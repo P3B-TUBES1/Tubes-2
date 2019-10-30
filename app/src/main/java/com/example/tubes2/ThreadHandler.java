@@ -29,6 +29,9 @@ public class ThreadHandler extends Handler {
             int[] n =(int[])msg.obj;
             this.iMainActivity.drawBullet(n[0],n[1]);
         }
+        else if(msg.what == -1){
+            this.iMainActivity.resetCanvas();
+        }
     }
     public void draw(int[] n){
         Message msg = new Message();
@@ -40,6 +43,11 @@ public class ThreadHandler extends Handler {
         Message msg = new Message();
         msg.what = 1; // value for bullet
         msg.obj = n;
+        this.sendMessage(msg);
+    }
+    public void invalidateCanvas(){
+        Message msg = new Message();
+        msg.what= -1;
         this.sendMessage(msg);
     }
 }

@@ -11,16 +11,14 @@ import java.util.List;
 
 public class MoveThread implements Runnable{
     private Thread thread;
-    private IMainActivity iMainActivity;
     private ThreadHandler threadHandler;
     private boolean flag = true;
     private Player player;
     private List<Bullet> bullet;
     private List<Enemy> enemy;
-    public MoveThread(Player player, List<Bullet> bullet, List<Enemy> enemy,IMainActivity iMainActivity){
+    public MoveThread(Player player, List<Bullet> bullet, List<Enemy> enemy,ThreadHandler threadHandler){
         this.thread = new Thread(this);
-        this.iMainActivity = iMainActivity;
-        this.threadHandler = new ThreadHandler(iMainActivity);
+        this.threadHandler = threadHandler;
         this.player = player;
         this.bullet = bullet;
         this.enemy = enemy;
@@ -31,6 +29,7 @@ public class MoveThread implements Runnable{
     @Override
     public void run() {
         while(flag){
+            long start = System.nanoTime();
             this.player.move();
             int[] n = new int[2];
             n[0] = this.player.getX();
@@ -45,9 +44,10 @@ public class MoveThread implements Runnable{
                 n[1] = this.bullet.get(i).getY();
                 this.threadHandler.drawBullet(n);
             }
-            this.iMainActivity.resetCanvas();
+            this.threadHandler.invalidateCanvas();
+            long end = (System.nanoTime()-start)/1000000;
             try{
-                Thread.sleep(1000/30);
+                Thread.sleep(1000/30-end);
             }catch(Exception e){
                 e.printStackTrace();
             }
