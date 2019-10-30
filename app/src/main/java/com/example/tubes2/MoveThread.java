@@ -13,13 +13,15 @@ public class MoveThread implements Runnable{
     private Thread thread;
     private ThreadHandler threadHandler;
     private boolean flag = true;
+    private int screenWidth; // lebar layar untuk collision
     private Player player;
     private List<Bullet> bullet;
     private List<Enemy> enemy;
-    public MoveThread(Player player, List<Bullet> bullet, List<Enemy> enemy,ThreadHandler threadHandler){
+    public MoveThread(Player player, List<Bullet> bullet, List<Enemy> enemy,ThreadHandler threadHandler,int width){
         this.thread = new Thread(this);
         this.threadHandler = threadHandler;
         this.player = player;
+        this.screenWidth = width;
         this.bullet = bullet;
         this.enemy = enemy;
     }
@@ -45,9 +47,11 @@ public class MoveThread implements Runnable{
                 this.threadHandler.drawBullet(n);
             }
             this.threadHandler.invalidateCanvas();
-            long end = (System.nanoTime()-start)/1000000;
+            if(player.getX() <= 0 || player.getX() >= screenWidth){
+                player.setVelocity(0);
+            }
             try{
-                Thread.sleep(1000/30-end);
+                Thread.sleep(1000/30-(System.nanoTime()-start)/1000000);
             }catch(Exception e){
                 e.printStackTrace();
             }

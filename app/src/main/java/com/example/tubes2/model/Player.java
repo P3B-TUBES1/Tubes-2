@@ -33,6 +33,9 @@ public class Player{
     public int getY(){
         return this.y;
     }
+    public int getVelocity(){
+        return this.velocity;
+    }
     public void move(){
         this.x = this.x+this.velocity;
     }
