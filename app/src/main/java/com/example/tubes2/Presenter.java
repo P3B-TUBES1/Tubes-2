@@ -33,7 +33,7 @@ public class Presenter {
 
     public void initialize(){ // init game
         this.player = new Player(this.imWidth/2,imHeight-Player.size*3);
-        this.moveThread = new MoveThread(player,listOfBullet,listOfEnemy,iMainActivity);
+        this.moveThread = new MoveThread(player,listOfBullet,listOfEnemy,this.threadHandler);
         this.moveThread.init();
         this.collisionDetector.create();
     }
