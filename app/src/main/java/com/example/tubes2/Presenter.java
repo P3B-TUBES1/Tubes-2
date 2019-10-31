@@ -9,80 +9,91 @@ import com.example.tubes2.model.Player;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class Presenter {
-    private IMainActivity iMainActivity;
-    private Player player;
-    private int imWidth;// nilai width image view
-    private int imHeight;//nilai height image view
+    protected IMainActivity iMainActivity;
+    protected Player player;
+    protected int imWidth;// nilai width image view
+    protected int imHeight;//nilai height image view
     protected ThreadHandler threadHandler;
     protected List<Bullet> listOfBullet;
     protected List<Enemy> listOfEnemy;
-    private MoveThread moveThread;
-    private CollisionDetector collisionDetector;
-    public Presenter(IMainActivity iMainActivity,int imWidth,int imHeight){
+    protected MoveThread moveThread;
+    protected BulletSpawn bulletSpawn;
+    protected EnemySpawn enemySpawn;
+
+    public Presenter(IMainActivity iMainActivity, int imWidth, int imHeight) {
         this.iMainActivity = iMainActivity;
         this.threadHandler = new ThreadHandler(iMainActivity);
         this.imWidth = imWidth;
         this.imHeight = imHeight;
         this.listOfBullet = new LinkedList<Bullet>();
         this.listOfEnemy = new LinkedList<Enemy>();
-        this.collisionDetector = new CollisionDetector();
+        this.bulletSpawn = new BulletSpawn();
+        this.enemySpawn = new EnemySpawn();
         this.initialize();
     }
 
-    public void initialize(){ // init game
-        this.player = new Player(this.imWidth/2,imHeight-Player.size*3);
-        this.moveThread = new MoveThread(player,listOfBullet,listOfEnemy,this.threadHandler,imWidth);
+    public void initialize() { // init game
+        this.player = new Player(this.imWidth / 2, imHeight - Player.size * 3);
+        this.moveThread = new MoveThread(player, listOfBullet, listOfEnemy, this.threadHandler, imWidth);
         this.moveThread.init();
-        this.collisionDetector.create();
+        this.bulletSpawn.create();
+        this.enemySpawn.create();
     }
-    public void movePlayer(float x,float y){
-        Log.d("test","outside if");
-            if (x > this.imWidth / 2 && player.getX()+20 <= imWidth) {
-                this.player.setVelocity(20);
-            } else if(x<=this.imWidth/2 && player.getX()-20>=0) {
 
-                this.player.setVelocity(-20);
-            }
+    public void movePlayer(float x, float y) {
+        Log.d("test", "outside if");
+        if (x > this.imWidth / 2 && player.getX() + 20 <= imWidth) {
+            this.player.setVelocity(20);
+        } else if (x <= this.imWidth / 2 && player.getX() - 20 >= 0) {
+
+            this.player.setVelocity(-20);
+        }
     }
-    public void stopMovePlayer(){
+
+    public void stopMovePlayer() {
         this.player.setVelocity(0);
     }
 
     /*
      * private class untuk handle collision dan juga pembuatan bullet dan musuh
      */
-    private class CollisionDetector implements Runnable{
+    private class BulletSpawn implements Runnable {
         private boolean flag = true;
         private Thread thread;
         private boolean isJurus; // cek apakah dapat jurus ato tidak
-        private int valueForJurus =1; // 1 untuk non jurus dan 2 untuk jurus
+        private int valueForJurus = 1; // 1 untuk non jurus dan 2 untuk jurus
         private long jurusTime; //mencatat waktu kapan jurus pertama kali dinyalakan
-        public CollisionDetector(){
+
+        public BulletSpawn() {
             this.thread = new Thread(this);
             this.isJurus = false;
         }
-        public void create(){
+
+        public void create() {
             this.thread.start();
-            Log.d("thread start","Start");
+            Log.d("thread start", "Start");
         }
+
         @Override
         public void run() {
             while (flag) {
                 long start = System.nanoTime();
-                Bullet bullet = new Bullet(player.getX() + Player.size / 2, player.getY() - 5);
+                Bullet bullet = new Bullet(player.getX(), player.getY() - 5);
                 listOfBullet.add(bullet);
-                if(isJurus){
+                isJurus = false;
+                if (isJurus) {
                     valueForJurus = 2;
-                    try {
+/*                    try {
                         Thread.sleep(250);
                     }catch(Exception e){
                         e.printStackTrace();
                     }
 
-                    Bullet bullet2 = new Bullet(player.getX() + Player.size / 2, player.getY() - 5);
-                    listOfBullet.add(bullet2); // bullet tambahan
+                    Bullet bullet2 = new Bullet(player.getX(), player.getY() - 5);
+                    listOfBullet.add(bullet2); // bullet tambahan*/
                 }
                 for (int i = 0; i < listOfBullet.size(); i++) {
                     if (listOfBullet.get(i).getY() <= 0) {
@@ -90,7 +101,46 @@ public class Presenter {
                     }
                 }
                 try {
-                    Thread.sleep(500/valueForJurus - (System.nanoTime()-start)/1000000);
+                    Thread.sleep(500 / valueForJurus - (System.nanoTime() - start) / 1000000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class EnemySpawn implements Runnable {
+        private boolean flag = true;
+        private Thread thread;
+        private long interval;
+
+        public EnemySpawn() {
+            this.interval = 2000;
+            this.thread = new Thread(this);
+        }
+
+        public void create() {
+            this.thread.start();
+            Log.d("thread start", "Start Enemy Spawn");
+        }
+
+        @Override
+        public void run() {
+            while (flag) {
+                long start = System.nanoTime();
+                Random rng = new Random();
+                Enemy enemy = new Enemy(rng.nextInt(imWidth), 0);
+                listOfEnemy.add(enemy);
+                for (int i = 0; i < listOfEnemy.size(); i++) {
+                    if (listOfEnemy.get(i).getY() >= imHeight) {
+                        listOfEnemy.remove(i);
+                    }
+                }
+                if (interval > 1000) {
+                    interval -= 50;
+                }
+                try {
+                    Thread.sleep(interval - (System.nanoTime() - start) / 1000000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

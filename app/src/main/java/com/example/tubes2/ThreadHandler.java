@@ -29,6 +29,10 @@ public class ThreadHandler extends Handler {
             int[] n =(int[])msg.obj;
             this.iMainActivity.drawBullet(n[0],n[1]);
         }
+        else if(msg.what == 2){
+            int[] n =(int[])msg.obj;
+            this.iMainActivity.drawEnemy(n[0],n[1],n[2]);
+        }
         else if(msg.what == -1){
             this.iMainActivity.resetCanvas();
         }
@@ -42,6 +46,13 @@ public class ThreadHandler extends Handler {
     public void drawBullet(int[] n ){
         Message msg = new Message();
         msg.what = 1; // value for bullet
+        msg.obj = n;
+        this.sendMessage(msg);
+    }
+
+    public void drawEnemy(int[] n ){
+        Message msg = new Message();
+        msg.what = 2; // value for enemy
         msg.obj = n;
         this.sendMessage(msg);
     }

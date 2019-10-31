@@ -36,6 +36,7 @@ public class MoveThread implements Runnable{
             int[] n = new int[2];
             n[0] = this.player.getX();
             n[1] = this.player.getY();
+            Log.d("how many bullet",this.bullet.size()+"");
 
             this.threadHandler.draw(n);
             for(int i=0;i<this.bullet.size();i++) {
@@ -44,6 +45,14 @@ public class MoveThread implements Runnable{
                 n[0] = this.bullet.get(i).getX();
                 n[1] = this.bullet.get(i).getY();
                 this.threadHandler.drawBullet(n);
+            }
+            for (int i = 0; i < this.enemy.size(); i++) {
+                this.enemy.get(i).move();
+                n = new int[3];
+                n[0] = this.enemy.get(i).getX();
+                n[1] = this.enemy.get(i).getY();
+                n[2] = this.enemy.get(i).getType();
+                this.threadHandler.drawEnemy(n);
             }
             this.threadHandler.invalidateCanvas();
             if(player.getX() <= 0 || player.getX() >= screenWidth){
