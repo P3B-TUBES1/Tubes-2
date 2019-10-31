@@ -42,12 +42,11 @@ public class MoveThread implements Runnable {
     public void run() {
         while (flag) {
             long start = System.nanoTime();
+            //player.x+velocity
             this.player.move();
             int[] n = new int[2];
             n[0] = this.player.getX();
             n[1] = this.player.getY();
-            Log.d("how many bullet", this.bullet.size() + "");
-
             this.threadHandler.draw(n);
             for (int i = 0; i < this.bullet.size(); i++) {
                 if (bullet.get(i).getY() <= 0) {
@@ -63,6 +62,7 @@ public class MoveThread implements Runnable {
             }
             for (int i = 0; i < this.enemy.size(); i++) {
                 if (enemy.get(i).getY() >= screenHeight) {
+                    // musuh dipojok screen
                     enemy.remove(i);
                 }
                 else {
@@ -80,6 +80,7 @@ public class MoveThread implements Runnable {
             n[1] = powerUp.getY();
             threadHandler.drawPowerUp(n);
             if (player.getX() <= 0 || player.getX() >= screenWidth) {
+                //player mentok dengan screen
                 player.setVelocity(0);
             }
             this.threadHandler.invalidateCanvas();

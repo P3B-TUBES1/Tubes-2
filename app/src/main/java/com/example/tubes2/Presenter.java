@@ -41,13 +41,12 @@ public class Presenter {
     public void initialize() { // init game
         this.player = new Player(this.imWidth / 2, imHeight - Player.size * 3);
         this.moveThread = new MoveThread(player, listOfBullet, listOfEnemy, this.powerUp,this.threadHandler, imWidth,imHeight);
-        this.moveThread.init();
-        this.bulletSpawn.create();
-        this.enemySpawn.create();
+        this.moveThread.init(); // start thread
+        this.bulletSpawn.create(); // start thread
+        this.enemySpawn.create(); // start thread
     }
 
     public void movePlayer(float x, float y) {
-        Log.d("test", "outside if");
         if (x > this.imWidth / 2 && player.getX() + 20 <= imWidth) {
             this.player.setVelocity(20);
         } else if (x <= this.imWidth / 2 && player.getX() - 20 >= 0) {
@@ -61,23 +60,22 @@ public class Presenter {
     }
 
     /*
-     * private class untuk handle collision dan juga pembuatan bullet dan musuh
+     * private class untuk pembuatan bullet
      */
     private class BulletSpawn implements Runnable {
         private boolean flag = true;
         private Thread thread;
-        private boolean isJurus; // cek apakah dapat jurus ato tidak
-        private int valueForJurus = 1; // 1 untuk non jurus dan 2 untuk jurus
-        private long jurusTime; //mencatat waktu kapan jurus pertama kali dinyalakan
+        private boolean powerUp; // cek apakah dapat jurus ato tidak
+        private int powerUpValue = 1; // 1 untuk non jurus dan 2 untuk jurus
+        private long powerUpTime; //mencatat waktu kapan jurus pertama kali dinyalakan
 
         public BulletSpawn() {
             this.thread = new Thread(this);
-            this.isJurus = false;
+            this.powerUp = false;
         }
 
         public void create() {
             this.thread.start();
-            Log.d("thread start", "Start");
         }
 
         @Override
@@ -86,9 +84,9 @@ public class Presenter {
                 long start = System.nanoTime();
                 Bullet bullet = new Bullet(player.getX(), player.getY() - 5);
                 listOfBullet.add(bullet);
-                isJurus = false;
-                if (isJurus) {
-                    valueForJurus = 2;
+                powerUp = false;
+                if (powerUp) {
+                    powerUpValue = 2;
 /*                    try {
                         Thread.sleep(250);
                     }catch(Exception e){
@@ -99,14 +97,16 @@ public class Presenter {
                     listOfBullet.add(bullet2); // bullet tambahan*/
                 }
                 try {
-                    Thread.sleep(500 / valueForJurus - (System.nanoTime() - start) / 1000000);
+                    Thread.sleep(500 / powerUpValue - (System.nanoTime() - start) / 1000000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
     }
-
+    /*
+    * kelas untuk pembuatan musuh dan juga powerUp
+     */
     private class EnemySpawn implements Runnable {
         private boolean flag = true;
         private Thread thread;
@@ -133,7 +133,7 @@ public class Presenter {
                 if (interval > 1000) {
                     interval -= 50;
                 }
-                if(Math.random() > 0.7 && powerUp.getIsAbleToSpawn()){
+                if(Math.random() > 0.8 && powerUp.getIsAbleToSpawn()){
                     powerUp.setIsAbleToSpawn(false);
                     powerUp.setX(rng.nextInt(imWidth));
                     powerUp.setY(0);
