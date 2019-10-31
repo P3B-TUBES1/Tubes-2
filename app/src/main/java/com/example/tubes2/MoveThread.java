@@ -36,7 +36,6 @@ public class MoveThread implements Runnable{
             int[] n = new int[2];
             n[0] = this.player.getX();
             n[1] = this.player.getY();
-            Log.d("how many bullet",this.bullet.size()+"");
 
             this.threadHandler.draw(n);
             for(int i=0;i<this.bullet.size();i++) {
