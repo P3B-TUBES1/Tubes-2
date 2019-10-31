@@ -40,7 +40,7 @@ public class Presenter {
 
     public void initialize() { // init game
         this.player = new Player(this.imWidth / 2, imHeight - Player.size * 3);
-        this.moveThread = new MoveThread(player, listOfBullet, listOfEnemy,this.powerUp,this.threadHandler, imWidth);
+        this.moveThread = new MoveThread(player, listOfBullet, listOfEnemy,this.powerUp,this.threadHandler, imWidth,imHeight);
         this.moveThread.init();
         this.bulletSpawn.create();
         this.enemySpawn.create();
@@ -87,11 +87,7 @@ public class Presenter {
                 if (powerUp) {
                     valueForPowerUp = 2;
                 }
-                for (int i = 0; i < listOfBullet.size(); i++) {
-                    if (listOfBullet.get(i).getY() <= 0) {
-                        listOfBullet.remove(i);
-                    }
-                }
+
                 try {
                     Thread.sleep(500 / valueForPowerUp - (System.nanoTime() - start) / 1000000);
                 } catch (Exception e) {
@@ -125,11 +121,6 @@ public class Presenter {
                 Random rng = new Random();
                 Enemy enemy = new Enemy(rng.nextInt(imWidth), 0);
                 listOfEnemy.add(enemy);
-                for (int i = 0; i < listOfEnemy.size(); i++) {
-                    if (listOfEnemy.get(i).getY() >= imHeight) {
-                        listOfEnemy.remove(i);
-                    }
-                }
                 if (interval > 1000) {
                     interval -= 50;
                 }

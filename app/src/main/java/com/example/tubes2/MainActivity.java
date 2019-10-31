@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
 
     @Override
     public void drawBackGround(int x,int y) {
-        mCanvas.drawRect(new Rect(x-55,y-55,x+55,y+55),paint2);
+        mCanvas.drawRect(new Rect(x-55,y-55,x+55,y+50),paint2);
     }
 
     @Override
