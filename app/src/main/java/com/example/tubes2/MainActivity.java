@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
     private Canvas mCanvas;
     private Presenter presenter;
     private Paint paint;
+    private Paint paint2;
     Bitmap bmPlayer;
     Bitmap bmEnemy1;
     Bitmap bmEnemy2;
@@ -48,9 +49,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
         this.im.setImageBitmap(bitMap);
         this.mCanvas = new Canvas(bitMap);
         this.paint = new Paint();
+        this.paint2 = new Paint();
+        paint2.setColor(Color.BLACK);
         this.paint.setColor(Color.WHITE);
-        int background = ResourcesCompat.getColor(getResources(),R.color.colorPrimary,null);
-        mCanvas.drawColor(background);
+        mCanvas.drawColor(Color.BLACK);
         this.im.invalidate();
         this.presenter = new Presenter(this,im.getWidth(),im.getHeight());//initialize presenter
         this.im.setOnTouchListener(this);
@@ -59,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
 
     @Override
     public void drawPlayer(int x,int y) {
-        int background = Color.BLACK;
-        mCanvas.drawColor(background); // berfungsi untuk reset layar
-        //this.mCanvas.drawRect(new Rect(x-30,y-30,x+30,y+30),paint);
+//        int background = Color.BLACK;
+//        mCanvas.drawColor(background); // berfungsi untuk reset layar
+//        this.mCanvas.drawRect(new Rect(x-30,y-30,x+30,y+30),paint);
         mCanvas.drawBitmap(bmPlayer,null,new Rect(x-50,y-50,x+50,y+50),null);
     }
 
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
 
     @Override
     public void drawEnemy(int x, int y, int type) {
-        //this.mCanvas.drawRect(new Rect(x-50,y-50,x+50,y+50),paint);
+//        this.mCanvas.drawRect(new Rect(x-50,y-50,x+50,y+50),paint);
         switch (type){
             case 0:
                 mCanvas.drawBitmap(bmEnemy1,null,new Rect(x-50,y-32,x+50,y+32),null);
@@ -81,11 +83,22 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
                 mCanvas.drawBitmap(bmEnemy2,null,new Rect(x-50,y-32,x+50,y+32),null);
                 break;
         }
+        this.resetCanvas();
     }
 
     @Override
     public void resetCanvas(){
         this.im.invalidate();
+    }
+
+    @Override
+    public void drawPowerUp(int x, int y) {
+        this.mCanvas.drawCircle(x,y,5,paint);
+    }
+
+    @Override
+    public void drawBackGround(int x,int y) {
+        mCanvas.drawRect(new Rect(x-55,y-55,x+55,y+55),paint2);
     }
 
     @Override

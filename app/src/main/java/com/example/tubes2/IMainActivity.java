@@ -5,4 +5,6 @@ public interface IMainActivity {
     void drawBullet(int x,int y); // gambar bullet
     void drawEnemy(int x,int y,int type);
     void resetCanvas(); // invalidate
+    void drawPowerUp(int x,int y);
+    void drawBackGround(int x,int y);
 }
