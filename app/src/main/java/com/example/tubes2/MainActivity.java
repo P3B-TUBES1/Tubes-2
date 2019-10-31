@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
     private Canvas mCanvas;
     private Presenter presenter;
     private Paint paint;
+    Bitmap bmPlayer;
+    Bitmap bmEnemy1;
+    Bitmap bmEnemy2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +41,14 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
         initiateAll();
     }
     private void initiateAll() {
-
         Bitmap bitMap = Bitmap.createBitmap(im.getWidth(),im.getHeight(), Bitmap.Config.ARGB_8888);
+        bmPlayer = BitmapFactory.decodeResource(getResources(),R.drawable.ship);
+        bmEnemy1 = BitmapFactory.decodeResource(getResources(),R.drawable.enemygreen);
+        bmEnemy2 = BitmapFactory.decodeResource(getResources(),R.drawable.enemyred);
         this.im.setImageBitmap(bitMap);
         this.mCanvas = new Canvas(bitMap);
         this.paint = new Paint();
+        this.paint.setColor(Color.WHITE);
         int background = ResourcesCompat.getColor(getResources(),R.color.colorPrimary,null);
         mCanvas.drawColor(background);
         this.im.invalidate();
@@ -52,16 +59,30 @@ public class MainActivity extends AppCompatActivity implements IMainActivity,Vie
 
     @Override
     public void drawPlayer(int x,int y) {
-        int background = ResourcesCompat.getColor(getResources(),R.color.colorPrimary,null);
+        int background = Color.BLACK;
         mCanvas.drawColor(background); // berfungsi untuk reset layar
-        this.mCanvas.drawRect(new Rect(x-25,y-25,x+25,y+25),paint);
-
+        //this.mCanvas.drawRect(new Rect(x-30,y-30,x+30,y+30),paint);
+        mCanvas.drawBitmap(bmPlayer,null,new Rect(x-50,y-50,x+50,y+50),null);
     }
 
     @Override
     public void drawBullet(int x, int y) {
-        this.mCanvas.drawRect(new Rect(x-25,y-25,x+25,y+25),paint);
+        this.mCanvas.drawRect(new Rect(x-1,y-0,x+1,y+50),paint);
     }
+
+    @Override
+    public void drawEnemy(int x, int y, int type) {
+        //this.mCanvas.drawRect(new Rect(x-50,y-50,x+50,y+50),paint);
+        switch (type){
+            case 0:
+                mCanvas.drawBitmap(bmEnemy1,null,new Rect(x-50,y-32,x+50,y+32),null);
+                break;
+            case 1:
+                mCanvas.drawBitmap(bmEnemy2,null,new Rect(x-50,y-32,x+50,y+32),null);
+                break;
+        }
+    }
+
     @Override
     public void resetCanvas(){
         this.im.invalidate();
