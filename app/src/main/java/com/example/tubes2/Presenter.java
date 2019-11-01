@@ -53,10 +53,9 @@ public class Presenter {
     }
 
     public void movePlayer(float x, float y) {
-        if (x > this.imWidth / 2 && player.getX() + 20 <= imWidth) {
+        if (x > this.imWidth / 2 && player.getX() + 20 <= imWidth-100) {
             this.player.setVelocity(20);
         } else if (x <= this.imWidth / 2 && player.getX() - 20 >= 0) {
-
             this.player.setVelocity(-20);
         }
     }
