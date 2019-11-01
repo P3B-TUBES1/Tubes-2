@@ -4,7 +4,9 @@ public class PowerUp {
     private int x,y;
     private final int velocity =10;
     private boolean isAbleToSpawn;
-    public PowerUp(){
+    public PowerUp(int x,int y){
+        this.x =x;
+        this.y= y;
         this.isAbleToSpawn = true;
     }
     public int getX(){

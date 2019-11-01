@@ -20,10 +20,9 @@ public class MoveThread implements Runnable {
     private List<Bullet> bullet;
     private List<Enemy> enemy;
     private PowerUp powerUp;
-
-    public MoveThread(Player player, List<Bullet> bullet, List<Enemy> enemy,PowerUp powerUp, ThreadHandler threadHandler, int width,int height) {
+    public MoveThread(Player player, List<Bullet> bullet, List<Enemy> enemy,PowerUp powerUp,
+                      ThreadHandler threadHandler, int width,int height) {
         this.thread = new Thread(this);
-
 
         this.threadHandler = threadHandler;
         this.player = player;
@@ -50,8 +49,9 @@ public class MoveThread implements Runnable {
             this.threadHandler.draw(n);
             for (int i = 0; i < this.bullet.size(); i++) {
                 if (bullet.get(i).getY() <= 0) {
-                    bullet.remove(i);
-                }
+                        bullet.remove(i);
+                        i--;
+                    }
                 else {
                     this.bullet.get(i).move();
                     n = new int[2];
@@ -62,9 +62,10 @@ public class MoveThread implements Runnable {
             }
             for (int i = 0; i < this.enemy.size(); i++) {
                 if (enemy.get(i).getY() >= screenHeight) {
-                    // musuh dipojok screen
                     enemy.remove(i);
+                        i--;
                 }
+
                 else {
                     this.enemy.get(i).move();
                     n = new int[3];
@@ -79,7 +80,7 @@ public class MoveThread implements Runnable {
             n[0] = powerUp.getX();
             n[1] = powerUp.getY();
             threadHandler.drawPowerUp(n);
-            if (player.getX() <= 0 || player.getX() >= screenWidth) {
+            if (player.getX() <= 0 || player.getX()+100 >= screenWidth) {
                 //player mentok dengan screen
                 player.setVelocity(0);
             }

@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
         int background = Color.BLACK;
         mCanvas.drawColor(background); // berfungsi untuk reset layar
         //this.mCanvas.drawRect(new Rect(x-30,y-30,x+30,y+30),paint);
-        mCanvas.drawBitmap(bmPlayer, null, new Rect(x - 50, y - 50, x + 50, y + 50), null);
+        mCanvas.drawBitmap(bmPlayer, null, new Rect(x, y , x + 100, y + 100), null);
     }
 
     @Override
     public void drawBullet(int x, int y) {
-        this.mCanvas.drawRect(new Rect(x - 1, y - 0, x + 1, y + 50), paint);
+        this.mCanvas.drawRect(new Rect(x - 0, y - 0, x + 2, y + 50), paint);
     }
 
     @Override
@@ -78,10 +78,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
         //this.mCanvas.drawRect(new Rect(x-50,y-50,x+50,y+50),paint);
         switch (type) {
             case 0:
-                mCanvas.drawBitmap(bmEnemy1, null, new Rect(x - 50, y - 32, x + 50, y + 32), null);
+                mCanvas.drawBitmap(bmEnemy1, null, new Rect(x , y, x + 200, y + 128), null);
                 break;
             case 1:
-                mCanvas.drawBitmap(bmEnemy2, null, new Rect(x - 50, y - 32, x + 50, y + 32), null);
+                mCanvas.drawBitmap(bmEnemy2, null, new Rect(x , y, x + 200, y + 128), null);
                 break;
         }
     }

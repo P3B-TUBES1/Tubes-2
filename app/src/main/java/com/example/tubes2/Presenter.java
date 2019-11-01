@@ -8,6 +8,7 @@ import com.example.tubes2.model.Player;
 import com.example.tubes2.model.PowerUp;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -21,6 +22,7 @@ public class Presenter {
     protected List<Bullet> listOfBullet;
     protected List<Enemy> listOfEnemy;
     protected MoveThread moveThread;
+    private CollisionDetection collisionDetection;
     protected BulletSpawn bulletSpawn;
     protected EnemySpawn enemySpawn;
     protected PowerUp powerUp;
@@ -30,20 +32,24 @@ public class Presenter {
         this.threadHandler = new ThreadHandler(iMainActivity);
         this.imWidth = imWidth;
         this.imHeight = imHeight;
-        this.listOfBullet = new LinkedList<Bullet>();
-        this.listOfEnemy = new LinkedList<Enemy>();
+        this.listOfBullet = Collections.synchronizedList(new LinkedList<Bullet>());
+        this.listOfEnemy = Collections.synchronizedList(new LinkedList<Enemy>());
         this.bulletSpawn = new BulletSpawn();
         this.enemySpawn = new EnemySpawn();
-        this.powerUp = new PowerUp();
+        this.powerUp = new PowerUp((int)(Math.random()*imWidth),0);
         this.initialize();
     }
 
     public void initialize() { // init game
-        this.player = new Player(this.imWidth / 2, imHeight - Player.size * 3);
-        this.moveThread = new MoveThread(player, listOfBullet, listOfEnemy, this.powerUp,this.threadHandler, imWidth,imHeight);
+        this.player = new Player(this.imWidth / 2 -50, imHeight - Player.size * 2);
+        this.collisionDetection = new CollisionDetection(this.player,listOfBullet,listOfEnemy,powerUp,this);
+        this.moveThread = new MoveThread(player, listOfBullet, listOfEnemy, this.powerUp,this.threadHandler,
+                imWidth,imHeight);
+
         this.moveThread.init(); // start thread
         this.bulletSpawn.create(); // start thread
         this.enemySpawn.create(); // start thread
+        this.collisionDetection.start(); // start thread
     }
 
     public void movePlayer(float x, float y) {
@@ -58,43 +64,38 @@ public class Presenter {
     public void stopMovePlayer() {
         this.player.setVelocity(0);
     }
-
+    public void activeJurus(){
+        bulletSpawn.setPowerUp();
+    }
     /*
      * private class untuk pembuatan bullet
      */
     private class BulletSpawn implements Runnable {
         private boolean flag = true;
         private Thread thread;
-        private boolean powerUp; // cek apakah dapat jurus ato tidak
         private int powerUpValue = 1; // 1 untuk non jurus dan 2 untuk jurus
         private long powerUpTime; //mencatat waktu kapan jurus pertama kali dinyalakan
 
         public BulletSpawn() {
             this.thread = new Thread(this);
-            this.powerUp = false;
         }
 
         public void create() {
             this.thread.start();
+        }
+        public void setPowerUp(){
+            this.powerUpValue = 2;
+            this.powerUpTime = System.currentTimeMillis();
         }
 
         @Override
         public void run() {
             while (flag) {
                 long start = System.nanoTime();
-                Bullet bullet = new Bullet(player.getX(), player.getY() - 5);
+                Bullet bullet = new Bullet(player.getX()+50, player.getY() - 5);
                 listOfBullet.add(bullet);
-                powerUp = false;
-                if (powerUp) {
-                    powerUpValue = 2;
-/*                    try {
-                        Thread.sleep(250);
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
-
-                    Bullet bullet2 = new Bullet(player.getX(), player.getY() - 5);
-                    listOfBullet.add(bullet2); // bullet tambahan*/
+                if(powerUpValue == 2 && System.currentTimeMillis() - powerUpTime >= 5000){
+                    powerUpValue =1;
                 }
                 try {
                     Thread.sleep(500 / powerUpValue - (System.nanoTime() - start) / 1000000);
@@ -127,13 +128,13 @@ public class Presenter {
             while (flag) {
                 long start = System.nanoTime();
                 Random rng = new Random();
-                Enemy enemy = new Enemy(rng.nextInt(imWidth), 0);
+                Enemy enemy = new Enemy(rng.nextInt(imWidth-200), 0);
                 listOfEnemy.add(enemy);
 
                 if (interval > 1000) {
                     interval -= 50;
                 }
-                if(Math.random() > 0.8 && powerUp.getIsAbleToSpawn()){
+                if(Math.random() > 0.95 && powerUp.getIsAbleToSpawn()){
                     powerUp.setIsAbleToSpawn(false);
                     powerUp.setX(rng.nextInt(imWidth));
                     powerUp.setY(0);
