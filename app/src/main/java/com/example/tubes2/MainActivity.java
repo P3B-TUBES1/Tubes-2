@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     float[] accelerometerReading = new float[3];
     float[] magnetometerReading = new float[3];
     float roll;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
