@@ -59,6 +59,7 @@ public class CollisionDetection implements Runnable{
                 int x2 = player.getX();
                 if(x1-x2<=100 && x1-x2>=0){
                     presenter.activeJurus();
+                    presenter.removePowerUp();
                 }
             }
             try{

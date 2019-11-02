@@ -79,6 +79,9 @@ public class Presenter {
         this.score+=x;
         this.threadHandler.writeScore(score);
     }
+    public void removePowerUp(){
+        this.powerUp.setY(imHeight);
+    }
     /*
      * private class untuk pembuatan bullet
      */
