@@ -66,6 +66,12 @@ public class Presenter {
     public void activeJurus(){
         bulletSpawn.setPowerUp();
     }
+
+    public void setFlag(){
+        this.bulletSpawn.setFlag();
+        this.enemySpawn.setFlag();
+        this.moveThread.setFlag();
+    }
     /*
      * private class untuk pembuatan bullet
      */
@@ -82,6 +88,7 @@ public class Presenter {
         public void create() {
             this.thread.start();
         }
+
         public void setPowerUp(){
             this.powerUpValue = 2;
             this.powerUpTime = System.currentTimeMillis();
@@ -102,6 +109,10 @@ public class Presenter {
                     e.printStackTrace();
                 }
             }
+        }
+
+        public void setFlag(){
+            this.flag = !this.flag;
         }
     }
     /*
@@ -147,6 +158,10 @@ public class Presenter {
                     e.printStackTrace();
                 }
             }
+        }
+
+        public void setFlag(){
+            this.flag = !this.flag;
         }
     }
 }

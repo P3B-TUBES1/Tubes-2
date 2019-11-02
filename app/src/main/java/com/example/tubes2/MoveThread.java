@@ -62,6 +62,7 @@ public class MoveThread implements Runnable {
             }
             for (int i = 0; i < this.enemy.size(); i++) {
                 if (enemy.get(i).getY() >= screenHeight) {
+                    this.threadHandler.gameOver();
                     enemy.remove(i);
                         i--;
                 }
@@ -91,5 +92,9 @@ public class MoveThread implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setFlag(){
+        this.flag = !this.flag;
     }
 }

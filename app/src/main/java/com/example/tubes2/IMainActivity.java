@@ -6,4 +6,5 @@ public interface IMainActivity {
     void drawEnemy(int x,int y,int type);
     void resetCanvas(); // invalidate
     void drawPowerUp(int x,int y);
+    void gameOver();
 }

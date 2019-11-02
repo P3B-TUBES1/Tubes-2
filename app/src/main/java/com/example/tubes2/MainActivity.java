@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     float[] accelerometerReading = new float[3];
     float[] magnetometerReading = new float[3];
     float roll;
+    boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     }
 
     private void initiateAll() {
+        this.flag = true;
         Bitmap bitMap = Bitmap.createBitmap(im.getWidth(), im.getHeight(), Bitmap.Config.ARGB_8888);
         bmPlayer = BitmapFactory.decodeResource(getResources(), R.drawable.ship);
         bmEnemy1 = BitmapFactory.decodeResource(getResources(), R.drawable.enemygreen);
@@ -117,10 +119,15 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     public boolean onTouch(View view, MotionEvent e) {
         switch (e.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                float x = e.getX();
-                float y = e.getY();
-                this.presenter.movePlayer(x, y);
-                break;
+                if(flag) {
+                    float x = e.getX();
+                    float y = e.getY();
+                    this.presenter.movePlayer(x, y);
+                    break;
+                }
+                else{
+                    this.initiateAll();
+                }
             case MotionEvent.ACTION_UP:
                 this.presenter.stopMovePlayer();
                 break;
@@ -200,5 +207,10 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public void gameOver(){
+        this.presenter.setFlag();
+        this.flag = false;
     }
 }

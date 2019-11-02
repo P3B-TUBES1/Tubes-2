@@ -38,6 +38,9 @@ public class ThreadHandler extends Handler {
                 n =(int[])msg.obj;
                 this.iMainActivity.drawPowerUp(n[0],n[1]);
                 break;
+            case 4:
+                this.iMainActivity.gameOver();
+                break;
             case -1:
                 this.iMainActivity.resetCanvas();
                 break;
@@ -72,6 +75,11 @@ public class ThreadHandler extends Handler {
     public void invalidateCanvas(){
         Message msg = new Message();
         msg.what= -1;
+        this.sendMessage(msg);
+    }
+    public void gameOver(){
+        Message msg = new Message();
+        msg.what= 4;
         this.sendMessage(msg);
     }
 }
