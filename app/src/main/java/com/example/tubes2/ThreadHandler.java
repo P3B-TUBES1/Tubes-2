@@ -41,6 +41,9 @@ public class ThreadHandler extends Handler {
             case 4:
                 this.iMainActivity.gameOver();
                 break;
+            case 5:
+                this.iMainActivity.writeScore((int)msg.obj);
+                break;
             case -1:
                 this.iMainActivity.resetCanvas();
                 break;
@@ -80,6 +83,12 @@ public class ThreadHandler extends Handler {
     public void gameOver(){
         Message msg = new Message();
         msg.what= 4;
+        this.sendMessage(msg);
+    }
+    public void writeScore(int n){
+        Message msg = new Message();
+        msg.what= 5;
+        msg.obj = n;
         this.sendMessage(msg);
     }
 }

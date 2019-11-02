@@ -16,4 +16,13 @@
         android:layout_alignParentRight="true"
         android:layout_width="70dp"
         android:layout_height="70dp" />
+    <TextView
+        android:id="@+id/tv_score"
+        android:padding="10dp"
+        android:text="0"
+        android:textSize="30dp"
+        android:textColor="#FFFFFF"
+        android:textAlignment="center"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"/>
 </RelativeLayout>

@@ -7,4 +7,5 @@ public interface IMainActivity {
     void resetCanvas(); // invalidate
     void drawPowerUp(int x,int y);
     void gameOver();
+    void writeScore(int x);
 }

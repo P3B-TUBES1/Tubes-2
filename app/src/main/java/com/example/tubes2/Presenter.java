@@ -26,6 +26,7 @@ public class Presenter {
     protected BulletSpawn bulletSpawn;
     protected EnemySpawn enemySpawn;
     protected PowerUp powerUp;
+    protected int score;
 
     public Presenter(IMainActivity iMainActivity, int imWidth, int imHeight) {
         this.iMainActivity = iMainActivity;
@@ -41,6 +42,7 @@ public class Presenter {
     }
 
     public void initialize() { // init game
+        this.score = 0;
         this.player = new Player(this.imWidth / 2 -50, imHeight - Player.size * 2);
         this.collisionDetection = new CollisionDetection(this.player,listOfBullet,listOfEnemy,powerUp,this);
         this.moveThread = new MoveThread(player, listOfBullet, listOfEnemy, this.powerUp,this.threadHandler,
@@ -71,6 +73,11 @@ public class Presenter {
         this.bulletSpawn.setFlag();
         this.enemySpawn.setFlag();
         this.moveThread.setFlag();
+    }
+
+    public void addScore(int x){
+        this.score+=x;
+        this.threadHandler.writeScore(score);
     }
     /*
      * private class untuk pembuatan bullet
@@ -163,5 +170,6 @@ public class Presenter {
         public void setFlag(){
             this.flag = !this.flag;
         }
+
     }
 }

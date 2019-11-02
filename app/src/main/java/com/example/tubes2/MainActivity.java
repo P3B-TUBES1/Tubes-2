@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
+
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity, View.OnTouchListener , View.OnClickListener, SensorEventListener {
@@ -43,12 +45,13 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     float[] magnetometerReading = new float[3];
     float roll;
     boolean flag;
-
+    TextView tv_score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         im = this.findViewById(R.id.canvas);
+        this.tv_score = findViewById(R.id.tv_score);
         this.btn_gyro = findViewById(R.id.button_gyro);
         this.btn_gyro.setOnClickListener(this);
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
 
     private void initiateAll() {
         this.flag = true;
+        this.writeScore(0);
         Bitmap bitMap = Bitmap.createBitmap(im.getWidth(), im.getHeight(), Bitmap.Config.ARGB_8888);
         bmPlayer = BitmapFactory.decodeResource(getResources(), R.drawable.ship);
         bmEnemy1 = BitmapFactory.decodeResource(getResources(), R.drawable.enemygreen);
@@ -212,5 +216,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     public void gameOver(){
         this.presenter.setFlag();
         this.flag = false;
+    }
+
+    public void writeScore(int x){
+        this.tv_score.setText(x+"");
     }
 }

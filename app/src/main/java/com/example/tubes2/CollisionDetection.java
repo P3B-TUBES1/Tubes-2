@@ -41,7 +41,8 @@ public class CollisionDetection implements Runnable{
                             int y1 = listOfBullet.get(j).getY();
                             int y2 = listOfEnemy.get(i).getY() + 128;
                             if (y2 - y1 >= 0 && y2 - y1 < 50) {
-
+                                //score
+                                this.presenter.addScore(5);
                                 listOfBullet.remove(j);
                                 j--;
                                 listOfEnemy.remove(i);
