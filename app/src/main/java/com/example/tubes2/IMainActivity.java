@@ -8,4 +8,5 @@ public interface IMainActivity {
     void drawPowerUp(int x,int y);
     void gameOver();
     void writeScore(int x);
+    void writeHighScore(int x);
 }

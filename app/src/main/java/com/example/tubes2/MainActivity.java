@@ -16,6 +16,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -25,6 +27,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -46,12 +50,16 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     float roll;
     boolean flag;
     TextView tv_score;
+    TextView tv_high_score;
+    HighScore highScore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         im = this.findViewById(R.id.canvas);
         this.tv_score = findViewById(R.id.tv_score);
+        this.tv_high_score = findViewById(R.id.tv_high_score);
         this.btn_gyro = findViewById(R.id.button_gyro);
         this.btn_gyro.setOnClickListener(this);
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -80,7 +88,9 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
         mCanvas.drawColor(background);
         this.im.invalidate();
         this.presenter = new Presenter(this, im.getWidth(), im.getHeight());//initialize presenter
+        this.highScore = new HighScore(presenter,this.getApplicationContext());
         this.im.setOnTouchListener(this);
+        this.highScore.executeGet();
     }
 
     @Override
@@ -214,11 +224,26 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     }
 
     public void gameOver(){
+        if(this.presenter.getScore()>this.presenter.getHighScore()){
+            this.updateHighScore();
+        }
         this.presenter.setFlag();
         this.flag = false;
     }
 
     public void writeScore(int x){
         this.tv_score.setText(x+"");
+    }
+
+    public void writeHighScore(int x){
+        this.tv_high_score.setText(x+"");
+    }
+
+    public void updateHighScore() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if(networkInfo!=null && networkInfo.isConnected()){
+            highScore.executePost("1",tv_score.getText()+"");
+        }
     }
 }

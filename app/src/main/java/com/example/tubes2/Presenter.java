@@ -27,6 +27,7 @@ public class Presenter {
     protected EnemySpawn enemySpawn;
     protected PowerUp powerUp;
     protected int score;
+    protected int highScore;
 
     public Presenter(IMainActivity iMainActivity, int imWidth, int imHeight) {
         this.iMainActivity = iMainActivity;
@@ -79,6 +80,20 @@ public class Presenter {
         this.score+=x;
         this.threadHandler.writeScore(score);
     }
+
+    public void writeHighScore(int x){
+        this.highScore = x;
+        this.iMainActivity.writeHighScore(x);
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
     /*
      * private class untuk pembuatan bullet
      */
@@ -170,6 +185,7 @@ public class Presenter {
         public void setFlag(){
             this.flag = !this.flag;
         }
+
 
     }
 }

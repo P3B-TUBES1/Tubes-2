@@ -44,6 +44,9 @@ public class ThreadHandler extends Handler {
             case 5:
                 this.iMainActivity.writeScore((int)msg.obj);
                 break;
+            case 6:
+                this.iMainActivity.writeHighScore((int)msg.obj);
+                break;
             case -1:
                 this.iMainActivity.resetCanvas();
                 break;
@@ -56,6 +59,7 @@ public class ThreadHandler extends Handler {
         msg.obj = n;
         this.sendMessage(msg);
     }
+
     public void drawBullet(int[] n ){
         Message msg = new Message();
         msg.what = 1; // value for bullet
@@ -69,25 +73,36 @@ public class ThreadHandler extends Handler {
         msg.obj = n;
         this.sendMessage(msg);
     }
+
     public void drawPowerUp(int[] n){
         Message msg = new Message();
         msg.what = 3; // value for power up
         msg.obj = n;
         this.sendMessage(msg);
     }
+
     public void invalidateCanvas(){
         Message msg = new Message();
         msg.what= -1;
         this.sendMessage(msg);
     }
+
     public void gameOver(){
         Message msg = new Message();
         msg.what= 4;
         this.sendMessage(msg);
     }
+
     public void writeScore(int n){
         Message msg = new Message();
         msg.what= 5;
+        msg.obj = n;
+        this.sendMessage(msg);
+    }
+
+    public void writeHighScore(int n){
+        Message msg = new Message();
+        msg.what= 6;
         msg.obj = n;
         this.sendMessage(msg);
     }
