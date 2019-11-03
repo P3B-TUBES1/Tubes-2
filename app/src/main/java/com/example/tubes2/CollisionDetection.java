@@ -42,7 +42,11 @@ public class CollisionDetection implements Runnable{
                             int y2 = listOfEnemy.get(i).getY() + 128;
                             if (y2 - y1 >= 0 && y2 - y1 < 50) {
                                 //score
-                                this.presenter.addScore(5);
+                                if(listOfEnemy.get(i).getType()==0){
+                                    this.presenter.addScore(5);
+                                }else{
+                                    this.presenter.addScore(10);
+                                }
                                 listOfBullet.remove(j);
                                 j--;
                                 listOfEnemy.remove(i);
@@ -59,6 +63,7 @@ public class CollisionDetection implements Runnable{
                 int x2 = player.getX();
                 if(x1-x2<=100 && x1-x2>=0){
                     presenter.activeJurus();
+                    presenter.removePowerUp();
                 }
             }
             try{

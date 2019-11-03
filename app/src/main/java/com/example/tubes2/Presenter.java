@@ -94,6 +94,10 @@ public class Presenter {
         return highScore;
     }
 
+    public void removePowerUp(){
+        this.powerUp.setY(imHeight);
+    }
+
     /*
      * private class untuk pembuatan bullet
      */
