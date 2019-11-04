@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
     private Canvas mCanvas;
     private Presenter presenter;
     private Paint paint;
+    private Paint paintText;
     Bitmap bmPlayer;
     Bitmap bmEnemy1;
     Bitmap bmEnemy2;
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
         this.mCanvas = new Canvas(bitMap);
         this.paint = new Paint();
         this.paint.setColor(Color.WHITE);
+        this.paintText = new Paint();
+        paintText.setTextSize(50sp);
         int background = ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null);
         mCanvas.drawColor(background);
         this.im.invalidate();
@@ -229,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
         }
         this.presenter.setFlag();
         this.flag = false;
+        this.mCanvas.drawText("GAME OVER",getWidth()/2,getHeight/2,paintText);
     }
 
     public void writeScore(int x){
