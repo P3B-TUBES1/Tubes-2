@@ -86,7 +86,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
         this.paint = new Paint();
         this.paint.setColor(Color.WHITE);
         this.paintText = new Paint();
-        paintText.setTextSize(50sp);
+        paintText.setTextSize(50);
+        paintText.setColor(Color.WHITE);
         int background = ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null);
         mCanvas.drawColor(background);
         this.im.invalidate();
@@ -232,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity, Vi
         }
         this.presenter.setFlag();
         this.flag = false;
-        this.mCanvas.drawText("GAME OVER",getWidth()/2,getHeight/2,paintText);
+        this.mCanvas.drawText("GAME OVER",im.getWidth()/2-100,im.getHeight()/2,paintText);
     }
 
     public void writeScore(int x){
